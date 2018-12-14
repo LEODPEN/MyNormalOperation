@@ -1,13 +1,13 @@
 package io;
 
 import javax.swing.plaf.synth.SynthLookAndFeel;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 public class IOUtil {
     /**读取指定文件内容，按照16进制输出到控制台
      * 并且每输出10个byte换行
+     * 单个处理
+     * 单字节读取不适合大文件，大文件效率很低
      */
     public static void printHex(String fileName) throws IOException {
         FileInputStream in = new FileInputStream(fileName);
@@ -25,7 +25,7 @@ public class IOUtil {
         }
         in.close();
     }
-
+//批量读取，对大文件而言效率高，也是我们最常用的读文件的方式
     public static void  printHexByByteArray(String fileName)throws IOException{
         FileInputStream in = new FileInputStream(fileName);
         byte[] buf = new byte[20*1024];
@@ -41,7 +41,26 @@ public class IOUtil {
             System.out.print(Integer.toHexString(buf[i]&0xff)+" ");
             //bytes8字节，int32字节，避免数据转换错误，将高24位清零
         }
+        in.close();
+    }
 
+    public static void  copyFile(File srcFile,File destFile)throws IOException{
+        if(!srcFile.exists()){
+            throw new  IllegalArgumentException("文件"+srcFile+"不存在");
+        }
+        if (!srcFile.isFile()){
+            throw new IllegalArgumentException(srcFile+"不是文件");
+        }
+        FileInputStream in = new FileInputStream(srcFile);
+        FileOutputStream out = new FileOutputStream(destFile);
+        byte[] buf = new byte[8*1024];
+        int b;
+        while((b=in.read(buf,0,buf.length))!=-1){
+            out.write(buf,0,b);
+            out.flush();//最好有此句,对字节流不加也没关系
+        }
+        in.close();
+        out.close();
     }
 
 
