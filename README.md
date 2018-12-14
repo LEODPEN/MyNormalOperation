@@ -1,2 +1,2 @@
 # MyNormalOperation
-try to use git
+to use git
