@@ -19,7 +19,7 @@ public class IOUtil {
                 System.out.print("0");
             }
             System.out.print(Integer.toHexString(b) + " ");
-            if (i++ % 10 == 9) {
+            if (i++ % 10 == 0) {
                 System.out.println();
             }
         }
@@ -46,13 +46,14 @@ public class IOUtil {
 
     public static void  copyFile(File srcFile,File destFile)throws IOException{
         if(!srcFile.exists()){
-            throw new  IllegalArgumentException("文件"+srcFile+"不存在");
+            throw new  IllegalArgumentException("文件"+srcFile+"不存在");//参数有问题就抛出这个异常就好了
         }
         if (!srcFile.isFile()){
             throw new IllegalArgumentException(srcFile+"不是文件");
         }
-        FileInputStream in = new FileInputStream(srcFile);
-        FileOutputStream out = new FileOutputStream(destFile);
+        FileInputStream in = new FileInputStream(srcFile);//进行读操作
+        FileOutputStream out = new FileOutputStream(destFile);//进行写操作
+        //批量读写
         byte[] buf = new byte[8*1024];
         int b;
         while((b=in.read(buf,0,buf.length))!=-1){
@@ -61,6 +62,25 @@ public class IOUtil {
         }
         in.close();
         out.close();
+    }
+
+    public static void copyFileByBuffer(File srcFile,File destFile)throws IOException{
+        if(!srcFile.exists()){
+            throw new  IllegalArgumentException("文件"+srcFile+"不存在");//参数有问题就抛出这个异常就好了
+        }
+        if (!srcFile.isFile()){
+            throw new IllegalArgumentException(srcFile+"不是文件");
+        }
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destFile));
+        int c;
+        while((c = bis.read())!=-1){
+            bos.write(c);
+            bos.flush();//刷新缓冲区，此处必须有!
+        }
+        bis.close();
+        bos.close();
+
     }
 
 

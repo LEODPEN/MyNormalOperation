@@ -2,10 +2,10 @@ package io;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class FileOutDemo {
+public class FileOutDemo1 {
     public static void main(String[] args) throws IOException {
-        //如果该文件不存在，则直接创建，如果存在，删除后创建
-        FileOutputStream out = new FileOutputStream("demo/out.dat");
+        //如果该文件不存在，则直接创建，如果存在，删除后创建，如果是追加加true就不会清空
+        FileOutputStream out = new FileOutputStream("demo/out.dat",true);
         out.write('A');//写出了'A'的低八位
         out.write('B');//写出了'B'的低八位
         int a = 10;//write只能写八位,那么写一个int需要些4次每次8位
@@ -16,7 +16,7 @@ public class FileOutDemo {
         byte[] gbk = "中国".getBytes("gbk");
         out.write(gbk);
         out.close();
-        IOUtil.printHex("demo/out.dat");
+        IOUtil.printHex("demo/out.dat");//利用之前写的方法看看结果
     }
 
 }
