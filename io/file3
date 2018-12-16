@@ -36,7 +36,7 @@ RandomAccessFile 至此随机访问文件，可以访问文件的任意位置
  对“流”功能的扩展，可以更加方便的读取int,long,字符等类型数据
  WriteInt()/WriteDouble()/WriteUTF();
 
- 8) BufferedInputStream &mBufferedOutputStream
+ 8) BufferedInputStream&BufferedOutputStream
  这两个流类为IO提供了带缓冲区的操作，一般打开文件进行写入或者读取操作时，都会加上缓存.(一整坨)
  这种流模式提高了IO的性能。
 （与FileOutputStream&DataOutputStream作对比）

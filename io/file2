@@ -12,3 +12,7 @@ java的文本（char）是16位无符号整数，是字符的unicode编码（双
   OutputStreamWriter 提供char流到byte流，按照编码处理
 
   FileReader / FileWriter
+
+
+  BufferedReader ---->readLine 一次读一行
+  BufferedWriter/PrintWriter ---->一次写1行
