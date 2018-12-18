@@ -23,5 +23,6 @@ public class DisDemo {
         System.out.println(s);
 
         dis.hashCode();
+        dis.close();
     }
 }

@@ -9,3 +9,11 @@
 3)序列化接口(Serializable)
   对象必须实现序列化接口，才能进行序列化，否则将出现异常
   这个接口，没有任何办法，只是一个标准
+
+4)transient 关键字
+ private void writeObject(java.ObjectOutputStream s)
+     throws java.io.IOException
+//从源码找,没有上述关键字的就反序列化，有的就自己弄反序列化
+//s.defaultReadObject();
+//比如一个int类型的age 就使用 this.age=s.readInt();
+对象的序列化和反序列化都递归调用了构造函数
