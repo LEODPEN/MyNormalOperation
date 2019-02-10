@@ -10,11 +10,11 @@ public class ArmyRunnable implements Runnable {
 
         while (keepRunning){
             for (int i = 0;i<5;i++){
-                System.out.println(Thread.currentThread().getName()+"fight[" + i + "]");
+                System.out.println(Thread.currentThread().getName()+" fight[" + i + "]");
                 //make multiple fight
                 Thread.yield();
             }
         }
-        System.out.println(Thread.currentThread().getName()+"end the fight");
+        System.out.println("little "+Thread.currentThread().getName()+" end the fight");
     }
 }
