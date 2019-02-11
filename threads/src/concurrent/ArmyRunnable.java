@@ -16,5 +16,13 @@ public class ArmyRunnable implements Runnable {
             }
         }
         System.out.println("little "+Thread.currentThread().getName()+" end the fight");
+
+        //下面两种方法一样的
+        /*long time = System.currentTimeMillis();
+        while(System.currentTimeMillis()-time<1000){} = Thread.sleep(1000);*/
+
+        //另有，interrupt 负负得正，最好通过旗标方法来设置线程结束或开始 eg: keepRunning
+
     }
+
 }
