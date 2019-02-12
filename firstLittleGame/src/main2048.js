@@ -81,3 +81,174 @@ function generateOneNumber() {
 
     return true;
 }
+
+$(document).keydown(function (event) {
+    switch (event.keyCode)
+        {
+            case 37:   //left
+            if(moveLeft()){
+                generateOneNumber();
+                isGameOver();
+            }
+                break;
+            case 38:   //up
+            if(moveUp()){
+                generateOneNumber();
+                isGameOver();
+            }
+                break;
+            case 39:   //right
+            if(moveRight()){
+                generateOneNumber(); //找到飘动数字罪魁祸首！
+                isGameOver();
+            }
+                break;
+            case 40:   //down
+            if(moveDown()){
+                generateOneNumber();
+                isGameOver();
+            }
+                break;
+            default:
+                break;
+        }
+})
+
+function isGameOver() {
+
+}
+
+function moveLeft() {
+    
+    if (!canMoveLeft(board)) return false;
+
+    for (var i = 0; i < 4; i++) {
+        for (var j = 1; j < 4; j++) {
+            if (board[i][j] != 0) {
+                for (var k = 0; k < j; k++) {
+                    if (board[i][k] == 0 && noBlockHorizontal(i, k, j, board)) {
+                        //move
+                        showMoveAnimation(i,j,i,k);
+                        board[i][k]=board[i][j];
+                        board[i][j]=0;
+
+
+                        continue;//移到不能移到为止
+                    }
+                    else if (board[i][j] == board[i][k]&&noBlockHorizontal(i,k,j,board)){
+                        //move and add
+                        showMoveAnimation(i,j,i,k);
+                        board[i][k]+=board[i][j];
+                        board[i][j]=0;
+
+
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+    setTimeout("updateBoardView()",200);//保证动画效果完整展示出来
+    return true;
+}
+
+function moveRight() {
+    if (!canMoveRight(board))
+        return false;
+    //move
+    for (var i = 0; i < 4; i++) {
+        for (var j = 2; j >= 0; j--) {
+            if (board[i][j] != 0) {         //这句话不加真的害人啊!!!
+                for (var k = 3 ; k > j; k--) {
+                    if (board[i][k] == 0 && noBlockHorizontal(i, j, k, board)){
+                        showMoveAnimation(i,j,i,k);
+                        board[i][k]=board[i][j];
+                        board[i][j]=0;
+
+                        continue;  // 依旧一直移动
+                    }
+
+                    else if (board[i][k] == board[i][j] && noBlockHorizontal(i, j, k, board)) {
+                        showMoveAnimation(i,j,i,k);
+                        board[i][k]*=2;
+                        board[i][j]=0;
+
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+    setTimeout("updateBoardView()",200);
+    return true;
+}
+
+
+function moveUp() {
+
+    if (!canMoveUp(board)) return false;
+
+    for (var j = 0; j < 4; j++) {
+        for (var i = 1; i < 4; i++) {
+            if (board[i][j] != 0) {
+                for (var k = 0; k < i; k++) {
+                    if (board[k][j] == 0 && noBlockVertical(j, k, i, board)) {
+                        //move
+                        showMoveAnimation(i,j,k,j);
+                        board[k][j]=board[i][j];
+                        board[i][j]=0;
+
+
+                        continue;//移到不能移到为止
+                    }
+                    else if (board[i][j] == board[k][j]&&noBlockVertical(j,k,i,board)){
+                        //move and add
+                        showMoveAnimation(i,j,k,j);
+                        board[k][j]+=board[i][j];
+                        board[i][j]=0;
+
+
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+    setTimeout("updateBoardView()",200);//保证动画效果完整展示出来
+    return true;
+}
+
+function moveDown(){
+    if( !canMoveDown(board) )
+        return false;
+
+    //moveDown
+    for( var j = 0 ; j < 4 ; j ++ )
+        for( var i = 2 ; i >= 0 ; i -- ){
+            if( board[i][j] != 0 ){
+                for( var k = 3 ; k > i ; k -- ){
+
+                    if( board[k][j] == 0 && noBlockVertical(j,i,k,board)){
+                        //move
+                        showMoveAnimation(i,j,k,j);
+                        board[k][j] = board[i][j];
+                        board[i][j] = 0;
+
+                        continue;
+                    }
+                    else if( board[k][j] == board[i][j] && noBlockVertical( j , i , k , board )){
+                        //move
+                        showMoveAnimation(i,j,k,j);
+                        //add
+                        board[k][j] += board[i][j];
+                        board[i][j] = 0;
+
+                        continue;
+                    }
+                }
+            }
+        }
+
+    setTimeout("updateBoardView()",200);
+    return true;
+}
