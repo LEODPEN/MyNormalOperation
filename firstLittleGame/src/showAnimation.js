@@ -7,8 +7,8 @@ function showNumberWithAnimation(randx, randy, randomNumber) {
 
     //动画函数，在50毫秒完成动画
     numberCell.animate({
-        width:"110px",
-        height:"110px",
+        width:cellSideLength,
+        height:cellSideLength,
         top:getPosTop(randx),
         left:getPosLeft(randy)
 
@@ -23,3 +23,11 @@ function showMoveAnimation(fromx, fromy, tox, toy) {
         left:getPosLeft(toy)
     },200);
 }
+
+function updateScore() {
+    $("#score").text(score);
+}
+
+/*function updateMyWords(words) {
+    $("#myWords").text(words);
+}*/

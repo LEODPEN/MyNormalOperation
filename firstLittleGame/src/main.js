@@ -1,11 +1,37 @@
 
+
+//8-   16- 32-   64-            128-         256-                 512-               1024-             -2048                        -4096                                          -8192
 var board = new Array();
 var score = 0;
+var hasConflicted = new Array();
+
+var startx=0;
+var starty=0;
+var endx=0;
+var endy=0;
 
 $(document).ready(function () {
+    prepareForMobile();
     newGame();
     
 });
+
+function prepareForMobile() {
+    if (documentWidth > 500) {
+        gridContainerWidth = 500;
+        cellSideLength = 110;
+        cellSpace = 12;
+
+    }
+    $("#grid-container").css('width',gridContainerWidth-2*cellSpace);
+    $("#grid-container").css('height',gridContainerWidth-2*cellSpace);
+    $("#grid-container").css('padding',cellSpace);
+    $("#grid-container").css('border-radius',0.02*gridContainerWidth);
+
+    $(".grid-cell").css('width',cellSideLength);
+    $(".grid-cell").css('height',cellSideLength);
+    $(".grid-cell").css('border-radius',0.02*cellSideLength);
+}
 
 function newGame() {
     //初始化操作
@@ -13,7 +39,6 @@ function newGame() {
     //随机两个格子生成数字
     generateOneNumber();
     generateOneNumber();
-
 }
 
 function init() {
@@ -25,16 +50,20 @@ function init() {
     }
     for( var i = 0 ; i < 4 ; i ++ ){
         board[i] = new Array();
+        hasConflicted[i] = new Array();
         for( var j = 0 ; j < 4 ; j ++ ){
             board[i][j] = 0;
-
+            hasConflicted[i][j] = false;
         }
     }
     updateBoardView();
+    score=0;
+    updateScore();
 }
 
 function updateBoardView() {
     $(".number-cell").remove();
+    var max = board[0][0];
     for( var i = 0 ; i < 4 ; i ++ )
         for( var j = 0 ; j < 4 ; j ++ ){
             $("#grid-container").append( '<div class="number-cell" id="number-cell-'+i+'-'+j+'"></div>' );
@@ -43,20 +72,25 @@ function updateBoardView() {
             if( board[i][j] == 0 ){
                 theNumberCell.css('width','0px');
                 theNumberCell.css('height','0px');
-                theNumberCell.css('top',getPosTop(i) + 55);//数字放中间
-                theNumberCell.css('left',getPosLeft(j) + 55);
+                theNumberCell.css('top',getPosTop(i) + cellSideLength/2);//数字放中间
+                theNumberCell.css('left',getPosLeft(j) + cellSideLength/2);
             }
             else{
-                theNumberCell.css('width','110px');
-                theNumberCell.css('height','110px');
+                theNumberCell.css('width',cellSideLength);
+                theNumberCell.css('height',cellSideLength);
                 theNumberCell.css('top',getPosTop(i));
                 theNumberCell.css('left',getPosLeft(j));
                 theNumberCell.css('background-color',getNumberBackgroundColor(board[i][j]));
                 theNumberCell.css('color',getNumberColor(board[i][j]));
                 theNumberCell.text(board[i][j]);
             }
-            //hasConflicted[i][j] = false;
+            if (board[i][j] > max) max = board[i][j];
+            //碰撞归位
+            hasConflicted[i][j] = false;
         }
+    $(".number-cell").css("line-height",cellSideLength+"px");
+    $(".number-cell").css("font-size",0.6*cellSideLength+"px");
+    //showMyWords(max);
 }
 
 function generateOneNumber() {
@@ -65,12 +99,24 @@ function generateOneNumber() {
     //随机一个位置
     var randx = parseInt(Math.floor(Math.random() * 4));//下取整并转化为整型
     var randy = parseInt(Math.floor(Math.random() * 4));
-    while (true) {
+
+    var times =0;
+    while (times<50) {
         if (board[randx][randy] == 0) break;
         else{
             var randx = parseInt(Math.floor(Math.random() * 4));
             var randy = parseInt(Math.floor(Math.random() * 4));
         }
+        times++;
+    }
+    if (times == 50) {
+        for( var i = 0 ; i < 4 ; i ++ )
+            for( var j = 0 ; j < 4 ; j ++ ){
+                if (board[i][j] == 0) {
+                    randx = i;
+                    randy = j;
+                }
+            }
     }
     //随机一个数字
     var randomNumber = Math.random()<0.5? 2:4;
@@ -83,30 +129,35 @@ function generateOneNumber() {
 }
 
 $(document).keydown(function (event) {
+
     switch (event.keyCode)
         {
             case 37:   //left
             if(moveLeft()){
-                generateOneNumber();
-                isGameOver();
+                event.preventDefault();//阻挡了按键的默认效果
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
             }
                 break;
             case 38:   //up
             if(moveUp()){
-                generateOneNumber();
-                isGameOver();
+                event.preventDefault();//阻挡了按键的默认效果
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
             }
                 break;
             case 39:   //right
             if(moveRight()){
-                generateOneNumber(); //找到飘动数字罪魁祸首！
-                isGameOver();
+                event.preventDefault();//阻挡了按键的默认效果
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
             }
                 break;
             case 40:   //down
             if(moveDown()){
-                generateOneNumber();
-                isGameOver();
+                event.preventDefault();//阻挡了按键的默认效果
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
             }
                 break;
             default:
@@ -114,7 +165,65 @@ $(document).keydown(function (event) {
         }
 })
 
+document.addEventListener('touchstart',function (event) {
+    startx=event.touches[0].pageX;
+    starty=event.touches[0].pageY;
+});
+
+document.addEventListener('touchend',function (event) {
+
+    endx=event.changedTouches[0].pageX;
+    endy=event.changedTouches[0].pageY;
+    var deltax=endx-startx;
+    var deltay=endy-starty;
+    
+    //可设置具体阈值来判断是否真的为一次操作
+    if( Math.abs( deltax ) < 0.3*documentWidth && Math.abs( deltay ) < 0.3*documentWidth )
+        return;
+    
+    if (Math.abs(deltax)>=Math.abs(deltay)){
+        if (deltax > 0) {
+            //move right
+            if (moveRight()) {
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
+            }
+        }
+        else{
+            //move left
+            if (moveLeft()) {
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
+            }
+        }
+    }
+    else{
+        if (deltay < 0) {     //???
+            //move up
+            if (moveUp()) {
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
+            }
+        }
+        else{
+            //move down
+            if (moveDown()) {
+                setTimeout(generateOneNumber(),210);
+                setTimeout(isGameOver(),300);
+            }
+        }
+    }
+});
+
+
 function isGameOver() {
+    if (nospace(board)&&(!canMoveDown(board))&&(!canMoveLeft(board))&&(!moveRight(board))&&(!moveUp(board)))
+        GameOver();
+    else;
+}
+
+function GameOver() {
+    alert("oh, fail this time !");
 
 }
 
@@ -135,13 +244,17 @@ function moveLeft() {
 
                         continue;//移到不能移到为止
                     }
-                    else if (board[i][j] == board[i][k]&&noBlockHorizontal(i,k,j,board)){
+                    else if (board[i][j] == board[i][k]&&noBlockHorizontal(i,k,j,board)&& (!hasConflicted[i][k])){
                         //move and add
                         showMoveAnimation(i,j,i,k);
                         board[i][k]+=board[i][j];
                         board[i][j]=0;
 
+                        //add score
+                        score+=board[i][k];
+                        updateScore();
 
+                        hasConflicted[i][k]=true;
                         continue;
                     }
                 }
@@ -168,12 +281,19 @@ function moveRight() {
                         continue;  // 依旧一直移动
                     }
 
-                    else if (board[i][k] == board[i][j] && noBlockHorizontal(i, j, k, board)) {
+                    else if (board[i][k] == board[i][j] && noBlockHorizontal(i, j, k, board)&&(!hasConflicted[i][k])) {
                         showMoveAnimation(i,j,i,k);
                         board[i][k]*=2;
                         board[i][j]=0;
 
+                        //add score
+                        score+=board[i][k];
+                        updateScore();
+
+                        hasConflicted[i][k]=true;
+
                         continue;
+
                     }
                 }
             }
@@ -201,12 +321,17 @@ function moveUp() {
 
                         continue;//移到不能移到为止
                     }
-                    else if (board[i][j] == board[k][j]&&noBlockVertical(j,k,i,board)){
+                    else if (board[i][j] == board[k][j]&&noBlockVertical(j,k,i,board)&&(!hasConflicted[k][j])){
                         //move and add
                         showMoveAnimation(i,j,k,j);
                         board[k][j]+=board[i][j];
                         board[i][j]=0;
 
+                        //add score
+                        score+=board[k][j];
+                        updateScore();
+
+                        hasConflicted[k][j]=true;
 
                         continue;
                     }
@@ -236,13 +361,18 @@ function moveDown(){
 
                         continue;
                     }
-                    else if( board[k][j] == board[i][j] && noBlockVertical( j , i , k , board )){
+                    else if( board[k][j] == board[i][j] && noBlockVertical( j , i , k , board )&&(!hasConflicted[k][j])){
                         //move
                         showMoveAnimation(i,j,k,j);
                         //add
                         board[k][j] += board[i][j];
                         board[i][j] = 0;
 
+                        //add score
+                        score+=board[k][j];
+                        updateScore();
+
+                        hasConflicted[k][j]=true;
                         continue;
                     }
                 }

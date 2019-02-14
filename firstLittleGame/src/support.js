@@ -1,10 +1,15 @@
 
+documentWidth = window.screen.availWidth;
+gridContainerWidth = 0.92*documentWidth;
+cellSideLength = 0.18*documentWidth;
+cellSpace = 0.04*documentWidth;
+
 function getPosTop(i) {
-    return 12 + i*122;
+    return cellSpace + i*(cellSpace+cellSideLength);
 }
 
 function getPosLeft(j) {
-    return 12 + j*122;
+    return cellSpace + j*(cellSpace+cellSideLength);
 }
 
 function getNumberBackgroundColor(number){
@@ -25,6 +30,26 @@ function getNumberBackgroundColor(number){
     }
     return "black";
 }
+
+/*function showMyWords(max) {
+    var words ="";
+    switch (max) {
+        case 8: words+=myWords[0];break;
+        case 16: for (var i = 0; i < 2; i++) words+=myWords[i];break;
+        case 32: for (var i = 0; i < 3; i++) words+=myWords[i];break;
+        case 64: for (var i = 0; i < 4; i++) words+=myWords[i];break;
+        case 128: for (var i = 0; i < 5; i++) words+=myWords[i];break;
+        case 256: for (var i = 0; i < 6; i++) words+=myWords[i];break;
+        case 512: for (var i = 0; i < 7; i++) words+=myWords[i];break;
+        case 1024: for (var i = 0; i < 8; i++) words+=myWords[i];break;
+        case 2048: for (var i = 0; i < 9; i++) words+=myWords[i];break;
+        case 4096: for (var i = 0; i < 10; i++) words+=myWords[i];break;
+        case 8192: for (var i = 0; i < 11; i++) {words+=myWords[i];/*if (i === 7) words+="\n";*//*}break;
+        default: words=words;
+    }
+    updateMyWords(words);
+}*/
+
 
 function getNumberColor(number){
     if( number <= 4 )
