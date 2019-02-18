@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/dbgirl
     username: root
-    data-password: 123456
+    password: pf19990122
   jpa:
     hibernate:
       ddl-auto: create
