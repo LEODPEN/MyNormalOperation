@@ -1,7 +1,7 @@
-package girl.girl;
+package girl.girl.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import girl.girl.Girl;
+import girl.girl.domain.Girl;
 import java.util.List;
 
 public interface GirlRepository extends JpaRepository<Girl,Integer> {

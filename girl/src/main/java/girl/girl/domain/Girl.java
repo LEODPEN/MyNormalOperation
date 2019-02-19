@@ -1,8 +1,9 @@
-package girl.girl;
+package girl.girl.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 
 @Entity//表示这个类对应数据库一个表
 public class Girl {
@@ -13,6 +14,7 @@ public class Girl {
 
     private String cupSize;
 
+    @Min(value = 18,message = "should above 18 years old!")
     private Integer age;
 
     public Girl() {
@@ -40,5 +42,14 @@ public class Girl {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Girl{" +
+                "id=" + id +
+                ", cupSize='" + cupSize + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

@@ -1,5 +1,7 @@
-package girl.girl;
+package girl.girl.service;
 
+import girl.girl.domain.Girl;
+import girl.girl.repository.GirlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ public class GirlService {
 
     @Autowired
     private GirlRepository girlRepository;
-    
+
     //@Transactional事务操作用于同时操作多条数据，只有查询的时候不用加，
     // 如果操作失败就不能操作，哪怕只有一条操作失败
     //因此考虑都加上这句（除非是查询），
