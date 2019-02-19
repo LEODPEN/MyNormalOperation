@@ -4,14 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
+@Entity//表示这个类对应数据库一个表
 public class Girl {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    private String cuoSize;
+    private String cupSize;
 
     private Integer age;
 
@@ -26,12 +26,12 @@ public class Girl {
         this.id = id;
     }
 
-    public String getCuoSize() {
-        return cuoSize;
+    public String getCupSize() {
+        return cupSize;
     }
 
-    public void setCuoSize(String cuoSize) {
-        this.cuoSize = cuoSize;
+    public void setCupSize(String cupSize) {
+        this.cupSize = cupSize;
     }
 
     public Integer getAge() {

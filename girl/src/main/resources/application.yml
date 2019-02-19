@@ -9,5 +9,5 @@ spring:
     password: pf19990122
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
