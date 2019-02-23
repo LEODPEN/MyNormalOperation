@@ -1,8 +1,11 @@
 package girl.girl.controller;
 
+import girl.girl.aspect.HttpAspect;
 import girl.girl.domain.Girl;
 import girl.girl.repository.GirlRepository;
 import girl.girl.service.GirlService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,8 @@ import java.util.Optional;
 @RestController
 public class GirlController {
 
+    private final static Logger logger = LoggerFactory.getLogger(GirlController.class);
+
     @Autowired
     private GirlRepository girlRepository;
 
@@ -23,6 +28,7 @@ public class GirlController {
     //查询所有女生列表
     @GetMapping(value = "/girls")
     public List<Girl> girlList(){
+        logger.info("girlList");
         return girlRepository.findAll();
     }
 
