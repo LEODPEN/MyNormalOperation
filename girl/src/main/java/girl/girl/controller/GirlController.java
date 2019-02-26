@@ -34,13 +34,13 @@ public class GirlController {
 
     //添加一个女生
     @PostMapping(value = "/girls")
-    public Girl girlAdd(@Valid Girl girl, BindingResult bindingResult){
+    public Object girlAdd(@Valid Girl girl, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            System.out.println(bindingResult.getFieldError().getDefaultMessage());
-            return null;
+            return bindingResult.getFieldError().getDefaultMessage();
         }
         girl.setCupSize(girl.getCupSize());
         girl.setAge(girl.getAge());
+        girl.setMoney(girl.getMoney());
         return girlRepository.save(girl);//这里的save方法返回的就是Girl的对象
     }
 
@@ -65,11 +65,12 @@ public class GirlController {
 
     //更新
     @PutMapping(value = "/girls/{id}")
-    public Girl girlUpdate(@PathVariable("id") Integer id, @RequestParam("cupSize") String cupSize, @RequestParam("age") Integer age) {
+    public Girl girlUpdate(@PathVariable("id") Integer id, @RequestParam("cupSize") String cupSize, @RequestParam("age") Integer age, @RequestParam("money") Double money) {
         Girl girl = new Girl();
         girl.setId(id);
         girl.setAge(age);
         girl.setCupSize(cupSize);
+        girl.setMoney(money);
         return girlRepository.save(girl);
 
     }
