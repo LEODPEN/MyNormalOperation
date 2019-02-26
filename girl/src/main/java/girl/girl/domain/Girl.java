@@ -15,7 +15,7 @@ public class Girl {
 
     private String cupSize;
 
-    @NotNull(message = "此字段必须有值！")
+    @NotNull(message = "money字段必传值!")
     private Double money;
 
     @Min(value = 18,message = "should above 18 years old!")

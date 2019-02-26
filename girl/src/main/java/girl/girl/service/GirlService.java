@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class GirlService {
@@ -31,4 +32,22 @@ public class GirlService {
         girlRepository.save(girlB);
 
     }
+    public void getAge(Integer id){
+        Girl girl = girlRepository.findById(id).get();
+        /*Optional<Girl> optional = girlRepository.findById(id);
+          Integer age = optional.orElseGet(Girl::new).getAge();
+          spring-boot 2.0后加了对java8 optional类型的支持*/
+        Integer age = girl.getAge();
+        if (age<10){
+
+        }
+        else if(age<16){
+
+        }
+        else{
+
+        }
+
+    }
+
 }

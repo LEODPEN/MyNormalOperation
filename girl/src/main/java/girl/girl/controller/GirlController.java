@@ -2,8 +2,10 @@ package girl.girl.controller;
 
 import girl.girl.aspect.HttpAspect;
 import girl.girl.domain.Girl;
+import girl.girl.domain.Result;
 import girl.girl.repository.GirlRepository;
 import girl.girl.service.GirlService;
+import girl.girl.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,15 @@ public class GirlController {
 
     //添加一个女生
     @PostMapping(value = "/girls")
-    public Object girlAdd(@Valid Girl girl, BindingResult bindingResult){
+    public Result<Girl> girlAdd(@Valid Girl girl, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return bindingResult.getFieldError().getDefaultMessage();
+            return ResultUtil.error(1,bindingResult.getFieldError().getDefaultMessage());
         }
         girl.setCupSize(girl.getCupSize());
         girl.setAge(girl.getAge());
         girl.setMoney(girl.getMoney());
-        return girlRepository.save(girl);//这里的save方法返回的就是Girl的对象
+        //这里的save方法返回的就是Girl的对象
+        return ResultUtil.success(girlRepository.save(girl));
     }
 
     //查询女生byId
@@ -86,6 +89,11 @@ public class GirlController {
     public void girlTwo(){
         girlService.insertTwo();
 
+    }
+
+    @GetMapping(value = "/girls/getAge/{id}")
+    public void getAge(@PathVariable("id") Integer id){
+        girlService.getAge(id);
     }
 
 }
