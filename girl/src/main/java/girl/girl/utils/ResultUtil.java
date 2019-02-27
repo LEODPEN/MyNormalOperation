@@ -23,7 +23,6 @@ public class ResultUtil {
         result.setMsg(msg);
         //result.setData(null);
         return result;
-
     }
 
 }

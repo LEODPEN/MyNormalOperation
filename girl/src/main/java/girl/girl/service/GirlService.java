@@ -1,6 +1,7 @@
 package girl.girl.service;
 
 import girl.girl.domain.Girl;
+import girl.girl.exception.GirlException;
 import girl.girl.repository.GirlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,17 @@ public class GirlService {
         girlRepository.save(girlB);
 
     }
-    public void getAge(Integer id){
+    public void getAge(Integer id)throws Exception{
         Girl girl = girlRepository.findById(id).get();
         /*Optional<Girl> optional = girlRepository.findById(id);
           Integer age = optional.orElseGet(Girl::new).getAge();
           spring-boot 2.0后加了对java8 optional类型的支持*/
         Integer age = girl.getAge();
         if (age<10){
-
+            throw new GirlException(100,"你还在上小学吧？");
         }
         else if(age<16){
+            throw new GirlException(101,"你可能在上初中?");
 
         }
         else{
