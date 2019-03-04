@@ -52,5 +52,10 @@ public class GirlService {
         }
 
     }
+    /*通过id查询并返回Girl*/
+    public Girl findOne(Integer id){
+        return girlRepository.findById(id).get();
+
+    }
 
 }

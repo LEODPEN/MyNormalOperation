@@ -50,10 +50,11 @@ public class GirlController {
 
     //查询女生byId
     @GetMapping(value = "/girls/{id}")
-    public Optional<Girl> girlFindOne(@PathVariable("id") Integer id){
-        return girlRepository.findById(id);
+    public Girl girlFindOne(@PathVariable("id") Integer id){
+        return girlRepository.findById(id).get();
     }
 
+    //或者option<Girl>配合return girlRepository.findById(id);
     /*构通Example查找 -- 使用findOne
     Girl girl = new Girl();
     girl.setId(id);
