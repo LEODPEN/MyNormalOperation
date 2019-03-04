@@ -1,6 +1,7 @@
 package girl.girl.service;
 
 import girl.girl.domain.Girl;
+import girl.girl.enums.ResultEnum;
 import girl.girl.exception.GirlException;
 import girl.girl.repository.GirlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,14 @@ public class GirlService {
           spring-boot 2.0后加了对java8 optional类型的支持*/
         Integer age = girl.getAge();
         if (age<10){
-            throw new GirlException(100,"你还在上小学吧？");
+            throw new GirlException(ResultEnum.PRIAMARY_SCHOOL);
         }
         else if(age<16){
-            throw new GirlException(101,"你可能在上初中?");
+            throw new GirlException(ResultEnum.MIDDLE_SCHOOL);
 
         }
         else{
-
+            throw new GirlException(ResultEnum.OLD_DOG);
         }
 
     }
