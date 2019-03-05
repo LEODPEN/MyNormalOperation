@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class Girl {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue//自增（但是企业项目一般id都是字符串且 not null）
     private Integer id;
 
     private String cupSize;
