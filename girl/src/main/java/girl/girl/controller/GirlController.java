@@ -29,9 +29,9 @@ public class GirlController {
 
     //查询所有女生列表
     @GetMapping(value = "/girls")
-    public List<Girl> girlList(){
+    public Result girlList(){
         logger.info("girlList");
-        return girlRepository.findAll();
+        return ResultUtil.success(girlRepository.findAll());
     }
 
     //添加一个女生

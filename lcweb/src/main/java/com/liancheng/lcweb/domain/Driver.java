@@ -3,19 +3,23 @@ package com.liancheng.lcweb.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "driver")
 public class Driver {
 
     //初步内容
+    /* 0表示在休息（一般刚刚创建的司机状态为0，需要司机手动改变状态，1表示在路上，2表示可载客）
+    初始密码为123456
+    * */
     @Id
-    private String id;
-
-    @NotNull(message = "电话号码不能为空")
     private String dnum;
 
-    @NotNull(message = "password 不为空")
+    private String name;
+
     private String password;
 
     @NotNull(message = "车牌号")
@@ -24,17 +28,21 @@ public class Driver {
     @NotNull(message = "选择所属路线")
     private String line;
 
-    private String name;
+    @Min(value = 18,message = "should above 18 years old!")
     private Integer age;
 
+    private Integer status;
 
-
-    public String getId() {
-        return id;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Driver() {
+        super();
     }
 
     public String getDnum() {
@@ -88,13 +96,13 @@ public class Driver {
     @Override
     public String toString() {
         return "Driver{" +
-                "id='" + id + '\'' +
                 ", dnum='" + dnum + '\'' +
                 ", password='" + password + '\'' +
                 ", carNum='" + carNum + '\'' +
                 ", line='" + line + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", status=" + status +
                 '}';
     }
 }
