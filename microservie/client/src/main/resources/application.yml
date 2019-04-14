@@ -1,0 +1,15 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.30.232.62:8761/eureka/
+
+spring:
+  application:
+    name: client1
+
+#  server:
+#    enable-self-preservation: false
+#  instance:
+#    hostname: pfpfpf  别名
+server:
+  port: 8088
