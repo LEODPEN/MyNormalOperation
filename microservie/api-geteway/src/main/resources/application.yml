@@ -1,0 +1,42 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: api-gateway
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 9000
+
+zuul:
+
+  routes:
+    # 更名操作，将原应用路由
+#    ChangeNamePath:
+#      path: /MTD/**
+#      serviceId: mtdback
+
+    # 简洁写法
+    mtdback: /MTD/**
+  #排除某些路由：
+  ignored-patterns:
+#    - /MTD/mtd/user/files
+#    - /mtdback/mtd/user/files
+    #可以为了简便写成通配符
+#    - /**/mtd/user/files
+  #全部服务忽略敏感头
+  sensitive-headers:
+
+
+
+#management:
+#  security:
+#    enabled: false
