@@ -35,6 +35,17 @@ zuul:
   #全部服务忽略敏感头
   sensitive-headers:
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+
+
+
 
 
 #management:

@@ -1,10 +1,15 @@
 package com.example.apigeteway.filter;
 
+import com.example.apigeteway.utils.CookieUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import org.apache.http.protocol.HTTP;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.PRE_DECORATION_FILTER_ORDER;
@@ -49,7 +54,12 @@ public class AuthUserFilter extends ZuulFilter {
         RequestContext requestContext =  RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
 
+        Cookie cookie = CookieUtil.get(request,"token");
+        if (cookie==null|| StringUtils.isEmpty(cookie.getValue())){
+            requestContext.setSendZuulResponse(false);
+            requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
 
+        }
 
         return null;
     }
